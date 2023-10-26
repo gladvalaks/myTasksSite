@@ -4,7 +4,8 @@
       <TaskForm @create-task="addTask" />
       <TasksList 
         :tasks="notCompletedTasks" 
-        @task-complete="taskComplete"  
+        @task-complete="completeTask"
+        @task-delete="deleteTask"   
       />
     </div>
 
@@ -54,20 +55,25 @@ export default {
   },
   computed:{
     notCompletedTasks(){
-            return this.tasks.filter((task)=>!task.wasCompleted);
-          },
+      return this.tasks.filter((task)=>!task.wasCompleted);
+    },
     completedTasks(){
       return this.tasks.filter((task)=>task.wasCompleted)
-    }
+    },
+    
   },
   methods: {
     addTask(task) {
       this.tasks.push(task);
     },
-    taskComplete(id){
+    completeTask(id){
       const task = this.tasks.find(task=> task.id == id);
       task.wasCompleted = true;
       this.userCoins += task.coins;
+    },
+    deleteTask(id){
+      const taskPos=this.tasks.indexOf(this.tasks.find(task=> task.id == id));
+      this.tasks.splice(taskPos,1);  
     }
   }
 }
@@ -81,6 +87,7 @@ export default {
 
 body {
   padding: 25px;
+  height: 100%;
 }
 
 .tasks {
