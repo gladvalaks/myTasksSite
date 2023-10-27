@@ -7,12 +7,11 @@
 <script>
 import MainPageContent from "@/pages/MainPageContent.vue"
 
-export default{
-  components:{
+export default {
+  components: {
     MainPageContent
   }
 }
 </script>
-<style>
 
-</style>
+<style></style>

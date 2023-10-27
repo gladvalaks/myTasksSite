@@ -1,20 +1,73 @@
 <template>
   <div class="task-form">
-    <form @submit.prevent>
-      <input v-model="title" class="task-input-text" type="text">
-      <input v-model="description" class="task-input-text-description" type="text">
-      <input v-model="coins" class="task-input-text" type="number" min="1" max="10">
-      <button class="button-create" @click="create">
+    <ValidationForm 
+      :validation-schema="schema" 
+      @submit="create"
+    >
+      <div>
+        <Field 
+          v-model="title"
+          name="title" 
+          class="task-input-text" 
+          type="text"
+          placeholder="Введите название вашей задачи" 
+        />
+        <ErrorMessage 
+          name="title" 
+          class="input-error" 
+        />
+        <Field 
+          v-model="description"
+          as="textarea" 
+          name="description" 
+          class="task-input-text-description" 
+          type="text"
+          placeholder="Введите описание вашей задачи, если оно требуется" 
+        />
+        <div class="container-coins">
+          <h4>Введите количество монеток за выполнение задания</h4>
+          
+          <Field 
+            v-model="coins"
+            name="coins"
+            class="task-input-coins" 
+            type="number" 
+            min="1" 
+            max="10" 
+          />
+
+          <ErrorMessage 
+            name="coins" 
+            class="input-error" 
+          />
+        </div>
+        <div class="is-daily">
+          <h4>Это будет ежедневное ваше задание (Задания такого типа будут появляться каждый день)?</h4>
+          <input 
+            v-model="isDaily" 
+            type="checkbox" 
+          >
+        </div>
+      </div>
+      <button class="button-create">
         Создать задачу
       </button>
-    </form>
+    </ValidationForm>
   </div>
 </template>
 
 <script>
-import {v4 as uuid4} from 'uuid'
+import { v4 as uuid4 } from 'uuid'
+import { Field, Form as ValidationForm, ErrorMessage } from 'vee-validate'
+import * as yup from 'yup';
+
 
 export default {
+  components: {
+    ValidationForm,
+    Field,
+    ErrorMessage
+  },
   emits: ["create-task"],
 
   data() {
@@ -22,32 +75,35 @@ export default {
       title: "",
       description: "",
       coins: 0,
-    }
+      isDaily: false,
+      schema:
+        yup.object({
+          title: yup.string()
+            .min(4, "Название должно быть длиннее 4 символов"),
+          coins: yup.number()
+            .min(1, "Количество монеток должно быть больше 1")
+        })
+    };
+    
   },
-
+  computed: {
+  },
   methods: {
-    isValid() {
-      return (
-        this.title.length < 4 || this.coins > 10 || this.coins < 1
-      );
-    },
-
     create() {
-      if (this.isValid()) {
-        return;
-      }
-
       const task = {
         id: uuid4(),
         title: this.title,
         description: this.description,
         coins: this.coins,
-        isTaskComplete: false
+        isTaskComplete: false,
+        isDaily: this.isDaily,
+        important: false
       };
 
       this.$emit('create-task', task);
     }
-  }
+  },
+
 }
 
 </script>
@@ -57,25 +113,51 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  border: 1px solid teal;
+  border: 2px solid teal;
 }
 
 .task-input-text,
 .task-input-text-description {
   margin: 1%;
   width: 95%;
+  max-width: 95%;
+  min-width: 95%;
+  max-height: 13vh;
   border: 1px solid teal;
   padding: 1% 1%;
 }
 
+.container-coins > * {
+  display: inline-block;
+  margin: 1%;
+}
+
+.is-daily > * {
+  display: inline-block;
+  margin: 1%;
+}
+
+
+.task-input-coins {
+  max-width: 10%;
+  min-width: 10%;
+  padding: 0.5% 0.5%;
+  border: 1px solid teal;
+}
+
 .button-create {
-  margin-bottom: 10px;
-  width: 98%;
+  width: 20%;
   align-self: flex-end;
   padding: 10px 15px;
   background: none;
   color: teal;
   border: 1px solid teal;
+  margin: 1%;
+  margin-left: 75%;
+}
+
+.input-error {
+  color: red;
   margin: 1%;
 }
 </style>
