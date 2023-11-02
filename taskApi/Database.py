@@ -1,0 +1,52 @@
+from Consts import *
+from Entities import*
+from Hasher import Hasher
+
+
+def create_db():
+    Base.metadata.create_all(engine)
+
+def check_user_by_email(email):
+    return bool(session.query(User).filter_by(email= email).first())
+
+def create_new_user(email, username, password):
+    user = User(email, username, Hasher.hash_password(password))
+    session.add(user)
+    session.commit()
+
+def auth(email, password):
+    user = session.query(User).filter_by(email=email).first()
+    if(user):
+        if(user.password == Hasher.hash_password(password)):
+            return user.id
+        else:
+            return "Не тот пароль"
+    else:
+        return "Пользователя нет"
+    
+def create_task_priority(title, order):
+    task_priority = TaskPriority(title,order)
+    session.add(task_priority)
+    session.commit()
+
+def get_priorities():
+    priorities = session.query(TaskPriority).all()
+    serialized_priorities = [priority.serialize() for priority in priorities]
+    return serialized_priorities
+
+def create_task(title,coins,user_id,is_daily,task_priority_id,description):
+    task = Task(title,coins,user_id,is_daily,task_priority_id,description)
+    session.add(task)
+    session.commit()
+
+def get_tasks(user_id):
+    tasks = session.query(Task).filter_by(user_id = user_id).all()
+    serialized_tasks = [task.serialize() for task in tasks]
+    return serialized_tasks
+
+
+
+create_db()
+
+
+
