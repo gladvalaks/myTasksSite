@@ -17,13 +17,15 @@ def create_new_user(email, username, password):
 def auth(email, password):
     user = session.query(User).filter_by(email=email).first()
     if(user):
-        if(user.password == Hasher.hash_password(password)):
+        if Hasher.compare(password, user.password):
             return user.id
         else:
             return "Не тот пароль"
     else:
         return "Пользователя нет"
-    
+
+
+
 def create_task_priority(title, order):
     task_priority = TaskPriority(title,order)
     session.add(task_priority)
@@ -38,6 +40,19 @@ def create_task(title,coins,user_id,is_daily,task_priority_id,description):
     task = Task(title,coins,user_id,is_daily,task_priority_id,description)
     session.add(task)
     session.commit()
+
+def edit_task(id,title,coins,is_daily,task_priority_id,description):
+    task = get_task(id)
+    task.edit(title,coins,is_daily,task_priority_id,description)
+    session.commit()
+
+def complete_task(id):
+    task = get_task(id)
+    task.complete()
+    session.commit()
+
+def get_task(id):
+    return session.query(Task).filter_by(id=id).first()
 
 def get_tasks(user_id):
     tasks = session.query(Task).filter_by(user_id = user_id).all()

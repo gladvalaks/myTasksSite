@@ -50,14 +50,25 @@ class Task(Base):
     finished_at = Column(DateTime())
 
     def __init__(self, title, coins, user_id, is_daily, task_priority_id, description):
+        self.edit(title, coins, user_id, is_daily, task_priority_id, description)
+        self.user_id = user_id
+
+    def edit(self, title, coins, is_daily, task_priority_id, description):
         self.title = title
         self.description = description
         self.coins = coins
-        self.user_id = user_id
         self.is_daily = is_daily
         self.task_priority_id = task_priority_id
+    
+    def complete(self):
+        self.finished_at = datetime.now()
 
     def serialize(self):
+        finished_at = self.finished_at
+        if not finished_at:
+            finished_at = 0
+        else:
+            finished_at = int(round(finished_at.timestamp() * 1000))
         return {
             'id': self.id,
             "task_body": {
@@ -69,5 +80,5 @@ class Task(Base):
                 'task_priority_id': self.task_priority_id
             },
             'created_at': int(round(self.created_at.timestamp() * 1000)),
-            'finished_at': self.finished_at
+            'finished_at':  finished_at
         }
