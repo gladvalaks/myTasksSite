@@ -42,6 +42,7 @@ import TaskForm from '@/components/task/TaskForm.vue';
 import UserProgress from "@/components/user/UserProgress.vue";
 import CompletedTasksList from '@/components/task/CompletedTasksList.vue';
 import DailyTaskList from '../components/task/DailyTaskList.vue';
+import axios from "axios"
 
 
 export default {
@@ -52,7 +53,13 @@ export default {
     CompletedTasksList,
     DailyTaskList
 },
-
+   created(){
+    axios.get("http://tasks.localhost.com/api/tasks").then((response) => {
+        console.log(response.data)
+        this.tasks = response.data
+      })
+  }
+            ,
   data() {
     return {
       userCoins: 0,
@@ -84,13 +91,13 @@ export default {
   },
   computed: {
     notCompletedTasks() {
-      return this.sortedTasks().filter((task) => !task.wasCompleted && !task.isDaily);
+      return this.sortedTasks().filter((task) => !task.finished_at && !task.isDaily);
     },
     notCompletedDailyTasks() {
-      return this.sortedTasks().filter((task) => !task.wasCompleted && task.isDaily);
+      return this.sortedTasks().filter((task) => !task.finished_at && task.isDaily);
     },
     completedTasks() {
-      return this.sortedTasks().filter((task) => task.wasCompleted);
+      return this.sortedTasks().filter((task) => task.finished_at>0);
     },
 
   },
