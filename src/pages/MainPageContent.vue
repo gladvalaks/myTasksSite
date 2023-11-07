@@ -1,7 +1,12 @@
 <template>
   <div class="main-page">
     <div class="daily-tasks">
-      <p>Заглушка</p>
+      <DailyTaskList 
+        :tasks="notCompletedDailyTasks"
+        @task-complete="completeTask"
+        @task-delete="deleteTask"
+        @task-change-important-status="changeImportantStatusTask" 
+      />
     </div>
 
     <div class="create-task">
@@ -25,6 +30,7 @@
       <UserProgress
         :user-coins="userCoins"
         :user-coins-required="userCoinsRequired"
+        @change-sort-method="changeSortMethod"
       />
     </div>
   </div>
@@ -35,19 +41,23 @@ import TasksList from '@/components/task/TasksList.vue';
 import TaskForm from '@/components/task/TaskForm.vue';
 import UserProgress from "@/components/user/UserProgress.vue";
 import CompletedTasksList from '@/components/task/CompletedTasksList.vue';
+import DailyTaskList from '../components/task/DailyTaskList.vue';
+
 
 export default {
   components: {
     TasksList,
     TaskForm,
     UserProgress,
-    CompletedTasksList
-  },
+    CompletedTasksList,
+    DailyTaskList
+},
 
   data() {
     return {
       userCoins: 0,
       userCoinsRequired: 10,
+      sortMethod: "byDate",
       tasks: [
         {
           id: 1,
@@ -56,7 +66,8 @@ export default {
           coins: 1,
           isDaily: false,
           wasCompleted: false,
-          important: false
+          important: false,
+          date: Date.now(),
         },
         {
           id: 2,
@@ -65,22 +76,22 @@ export default {
           coins: 10,
           isDaily: false,
           wasCompleted: false,
-          important: true
+          important: true,
+          date: Date.now()+1,
         },
       ]
     }
   },
   computed: {
     notCompletedTasks() {
-      return this.tasks.filter((task) => !task.wasCompleted);
+      return this.sortedTasks().filter((task) => !task.wasCompleted && !task.isDaily);
+    },
+    notCompletedDailyTasks() {
+      return this.sortedTasks().filter((task) => !task.wasCompleted && task.isDaily);
     },
     completedTasks() {
-      return this.tasks.filter((task) => task.wasCompleted);
+      return this.sortedTasks().filter((task) => task.wasCompleted);
     },
-    sortedByImportantTasks() {
-      const importantTasks = this.tasks.slice(0, this.tasks.length);
-      return importantTasks.sort((a, b) => b.important - a.important);
-    }
 
   },
   methods: {
@@ -103,10 +114,32 @@ export default {
       const taskPos = this.tasks.indexOf(this.tasks.find(task => task.id == id));
       this.tasks.splice(taskPos, 1);
     },
-
     findTask(id) {
       return this.tasks.find(task => task.id == id);
-    }
+    },
+    changeSortMethod(sortMethod){
+      this.sortMethod = sortMethod;
+    },
+    sortedTasks(){
+      if(this.sortMethod=="byDate"){
+        return this.sortedByDateTasks();
+      }
+      else if(this.sortMethod=="byCoins"){
+        return this.sortedByCoinsTasks()
+      }
+      else{
+        return this.sortedByImportantTasks();
+      }
+    },
+    sortedByImportantTasks() {
+      return this.tasks.sort((a, b) => b.important - a.important);
+    },
+    sortedByDateTasks() {
+      return this.tasks.sort((a, b) => b.date - a.date);
+    },
+    sortedByCoinsTasks() {
+      return this.tasks.sort((a, b) => b.coins - a.coins);
+    },
   }
 }
 </script>

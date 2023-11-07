@@ -1,8 +1,8 @@
 <template>
-  <div class="not-completed-task-list">
+  <div class="not-completed-daily-task-list">
     <div 
       v-for="task in tasks" 
-      :key="task.id" 
+      :key="task.id"       
       :class="[task.important ? 'task-important':'task']"
     >
       <NotCompletedTask :task="task" />
@@ -63,18 +63,23 @@ export default {
 
 
 <style>
-.task-buttons{
-  display: inline-block;
-  margin-left: 0%;
-
-}
-.task-complete-button, .task-cancel-button, .task-star-button{
-  display: inline-block;
-  margin-left: 5%;
-}
-.not-completed-task-list{
+.not-completed-daily-task-list{
   border: 1px teal solid;
   overflow-y: scroll;
-  height: 50vh;
+  height: 49vh;
+
+  .task-buttons{
+    display: inline-block;
+    margin-left: 0%;
+
+    .task-complete-button, .task-cancel-button, .task-star-button
+    {
+      display: inline-block;
+      margin-left: 5%;
+    }
+  }
 }
+
+
+
 </style>

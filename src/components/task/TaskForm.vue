@@ -97,7 +97,8 @@ export default {
         coins: this.coins,
         isTaskComplete: false,
         isDaily: this.isDaily,
-        important: false
+        important: false,
+        date: Date.now()
       };
 
       this.$emit('create-task', task);
@@ -146,14 +147,13 @@ export default {
 }
 
 .button-create {
-  width: 20%;
-  align-self: flex-end;
-  padding: 10px 15px;
+  width: 50%;
+  font-size: 1.2vw;
   background: none;
   color: teal;
   border: 1px solid teal;
   margin: 1%;
-  margin-left: 75%;
+  margin-left: 25%;
 }
 
 .input-error {

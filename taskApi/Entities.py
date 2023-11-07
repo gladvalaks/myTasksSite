@@ -50,7 +50,7 @@ class Task(Base):
     finished_at = Column(DateTime())
 
     def __init__(self, title, coins, user_id, is_daily, task_priority_id, description):
-        self.edit(title, coins, user_id, is_daily, task_priority_id, description)
+        self.edit(title, coins,  is_daily, task_priority_id, description)
         self.user_id = user_id
 
     def edit(self, title, coins, is_daily, task_priority_id, description):

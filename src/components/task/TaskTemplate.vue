@@ -24,5 +24,16 @@ export default{
   max-width: 100%;
   word-wrap: break-word;
 }
+.task {
+  border: 2px solid teal;
+  padding: 1%;
+  margin-top: 10px;
+}
 
+.task-important{
+  border: 2px solid teal;
+  padding: 1%;
+  margin-top: 10px;
+  background-color: rgb(255, 0, 0);
+}
 </style>

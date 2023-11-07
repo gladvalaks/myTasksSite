@@ -1,10 +1,11 @@
-import argon2
+from passlib.context import CryptContext
 
-class Hasher():
-    salt = 'THATSMYSECRETKEYHAHAHA25'
-    @staticmethod
-    def hash_password(password):
-        return argon2.argon2_hash(password,Hasher.salt)
-    @staticmethod
-    def compare(password, hashed_password):
-        return Hasher.hash_password(password) == hashed_password
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
+def hash_password(password):
+    return pwd_context.hash(password)
+
+
+def compare(password, hashed_password):
+    return pwd_context.verify(password, hashed_password)
