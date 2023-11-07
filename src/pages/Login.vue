@@ -43,7 +43,7 @@ export default{
     methods:{
         auth(){
             const requestBody = {"email":this.email, "password":this.password}
-            fetch("https://mytasks-8rct.onrender.com//auth",{
+            fetch("/api/auth", {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
