@@ -1,7 +1,7 @@
 
 <template>
   <div>
-    <MainPageContent />
+    <RouterView />
   </div>
 </template>
 <script>
