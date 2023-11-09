@@ -16,6 +16,10 @@ export default {
     userCoinsRequired: {
       type: Number,
       required: true
+    },
+    userName:{
+      type: String,
+      required: true
     }
   },
   emits:["change-sort-method"],
@@ -25,7 +29,8 @@ export default {
 
 <template>
   <div class="user-progress">
-    <h1>Ваш Прогресс</h1>
+    <h1>Здравствуйте, {{ userName }}</h1>
+    <h2>Ваш Прогресс</h2>
     <h1 class="user-coins">
       <p>{{ userCoins }} / {{ userCoinsRequired }}</p>
     </h1>

@@ -9,5 +9,4 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 engine = create_engine('sqlite:///databaseV2.db')
 Session = sessionmaker(engine)
-session = Session()
 Base = declarative_base()

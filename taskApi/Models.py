@@ -15,6 +15,9 @@ class UserDataForRegistration(BaseModel):
     username: str
     password: str
 
+class UserDataForAuth(BaseModel):
+    email: str
+    password: str
 
 class TaskBody(BaseModel):
     title: str
@@ -24,9 +27,6 @@ class TaskBody(BaseModel):
     task_priority_id: int
 
 
-class UserDataForAuth(BaseModel):
-    email: str
-    password: str
 
 
 class GetTasks(BaseModel):

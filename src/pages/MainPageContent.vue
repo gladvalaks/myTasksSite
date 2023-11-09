@@ -30,6 +30,7 @@
       <UserProgress
         :user-coins="userCoins"
         :user-coins-required="userCoinsRequired"
+        :user-name = "userName"
         @change-sort-method="changeSortMethod"
       />
     </div>
@@ -42,6 +43,7 @@ import TaskForm from '@/components/task/TaskForm.vue';
 import UserProgress from "@/components/user/UserProgress.vue";
 import CompletedTasksList from '@/components/task/CompletedTasksList.vue';
 import DailyTaskList from '../components/task/DailyTaskList.vue';
+import axios from "axios"
 
 
 export default {
@@ -52,57 +54,58 @@ export default {
     CompletedTasksList,
     DailyTaskList
 },
+   created(){
 
+    this.updateTaskList()
+    this.getUserName()
+
+  }
+            ,
   data() {
     return {
+      userName : "",
       userCoins: 0,
       userCoinsRequired: 10,
       sortMethod: "byDate",
-      tasks: [
-        {
-          id: 1,
-          title: "Сходить в тренажерный зал",
-          description: "Жим лежа 5 по 70, подтягивания 5 по 10.",
-          coins: 1,
-          isDaily: false,
-          wasCompleted: false,
-          important: false,
-          date: Date.now(),
-        },
-        {
-          id: 2,
-          title: "Прочитать 3 главы Чистого кода",
-          description: "Составить краткий план прочитанных глав",
-          coins: 10,
-          isDaily: false,
-          wasCompleted: false,
-          important: true,
-          date: Date.now()+1,
-        },
-      ]
+      tasks: []
     }
   },
   computed: {
-    notCompletedTasks() {
-      return this.sortedTasks().filter((task) => !task.wasCompleted && !task.isDaily);
+    notCompletedTasks() { 
+      return this.sortedTasks().filter((task) => !task.finished_at && !task.is_daily);
     },
     notCompletedDailyTasks() {
-      return this.sortedTasks().filter((task) => !task.wasCompleted && task.isDaily);
+      return this.sortedTasks().filter((task) => !task.finished_at && task.is_daily);
     },
     completedTasks() {
-      return this.sortedTasks().filter((task) => task.wasCompleted);
+      return this.sortedTasks().filter((task) => +new Date().setHours(0,0,0,0)== +new Date(task.finished_at).setHours(0,0,0,0));
     },
 
   },
   methods: {
-    addTask(task) {
-      this.tasks.push(task);
+    async addTask(task) {
+      await axios.post("http://tasks.localhost.com/api/tasks",task)
+      this.updateTaskList();
     },
-
-    completeTask(id) {
-      const task = this.findTask(id);
-      task.wasCompleted = true;
-      this.userCoins += task.coins;
+    async completeTask(id) {
+      await axios.patch(`http://tasks.localhost.com/api/tasks/${id}/complete`).then((response)=> console.log(response));
+      this.updateTaskList();
+    },
+    async deleteTask(id) {
+      await axios.delete(`http://tasks.localhost.com/api/tasks/${id}`).then((response)=> console.log(response));
+      this.updateTaskList();
+    },
+    async updateTaskList(){
+      this.tasks = await axios.get("http://tasks.localhost.com/api/tasks").then((response) => {
+        return response.data
+      })
+      .catch(()=>this.$router.push("/login"))
+    },
+    async getUserName(){
+      this.userName = await axios.get("http://tasks.localhost.com/api/user").then((response) => {
+        return response.data
+      })
+      .catch(()=>this.$router.push("/login"))
     },
 
     changeImportantStatusTask(id) {
@@ -110,10 +113,7 @@ export default {
       task.important = !task.important;
     },
 
-    deleteTask(id) {
-      const taskPos = this.tasks.indexOf(this.tasks.find(task => task.id == id));
-      this.tasks.splice(taskPos, 1);
-    },
+    
     findTask(id) {
       return this.tasks.find(task => task.id == id);
     },

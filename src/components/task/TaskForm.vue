@@ -57,7 +57,6 @@
 </template>
 
 <script>
-import { v4 as uuid4 } from 'uuid'
 import { Field, Form as ValidationForm, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup';
 
@@ -91,14 +90,11 @@ export default {
   methods: {
     create() {
       const task = {
-        id: uuid4(),
         title: this.title,
         description: this.description,
         coins: this.coins,
-        isTaskComplete: false,
-        isDaily: this.isDaily,
-        important: false,
-        date: Date.now()
+        is_daily: this.isDaily,
+        task_priority_id: 1
       };
 
       this.$emit('create-task', task);
