@@ -1,7 +1,6 @@
 **/node_modules
-**.json 
-**/vite.config.js 
-**databaseV2.db 
+*.pyc 
+databaseV2.db 
 .mypy_cache
 .env
 .package-lock.json
