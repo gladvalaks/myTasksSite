@@ -8,17 +8,16 @@ def get_username(id: int, session: Session):
 
 
 def is_user_with_email_exists(email: str, session: Session):
-    return bool(session.query(entities.User).filter_by(email=email).first())
+    return bool(session.query(entities.User).filter_by(email=email).one_or_none())
 
 
 def create_new_user(email, username, password, session: Session):
-    user = entities.User(email = email, username=username, password = hasher.hash_password(password))
-    session.add(user)
+    session.add(entities.User(email = email, username=username, password = hasher.hash_password(password)))
     session.commit()
 
 
 def auth(email: str, password: str, session: Session):
-    user = session.query(entities.User).filter_by(email=email).first()
+    user = session.query(entities.User).filter_by(email=email).one_or_none()
     if user:
         if hasher.compare(password, user.password):
             return user.id
