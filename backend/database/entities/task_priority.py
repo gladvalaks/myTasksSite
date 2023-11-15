@@ -8,10 +8,3 @@ class TaskPriority(Base):
     id = Column(Integer(), primary_key=True)
     title = Column(String(), nullable=False)
     order = Column(Integer(), nullable=False)
-
-    def __init__(self, title: str, order: int):
-        self.title = title
-        self.order = order
-
-    def serialize(self):
-        return {"id": self.id, "title": self.title, "order": self.order}

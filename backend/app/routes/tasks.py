@@ -3,7 +3,7 @@ from typing import Annotated
 from database.database import get_session
 from sqlalchemy.orm import Session
 import models.requests.task as task_requests_models
-import database.repository.task as db
+import database.repository.task as task_repo
 import libs.token as jwt_token
 
 router = APIRouter()
@@ -17,7 +17,7 @@ def get_tasks(
 ):
     try:
         response.status_code = status.HTTP_200_OK
-        return db.get_serialized_today_tasks(user_id, session)
+        return task_repo.get_serialized_today_tasks(user_id, session)
 
     except Exception as er:
         return {"response": "fail"}
@@ -30,7 +30,7 @@ def create_task(
     user_id: Annotated[int, Depends(jwt_token.get_user_id)],
     session: Session = Depends(get_session),
 ):
-    db.create_task(
+    task_repo.create_task(
         task_body.title,
         task_body.coins,
         user_id,
@@ -48,8 +48,8 @@ def delete_task(
     user_id: Annotated[int, Depends(jwt_token.get_user_id)],
     session: Session = Depends(get_session),
 ):
-    if db.is_user_task(user_id, task_id, session):
-        db.delete_task(task_id, session)
+    if task_repo.is_user_task(user_id, task_id, session):
+        task_repo.delete_task(task_id, session)
         return {"response": "task was deleted"}
     return {"response": "You don't have the rights to do this"}
 
@@ -62,8 +62,8 @@ def edit_task(
     user_id: Annotated[int, Depends(jwt_token.get_user_id)],
     session: Session = Depends(get_session),
 ):
-    if db.is_user_task(user_id, task_id, session):
-        db.edit_task(
+    if task_repo.is_user_task(user_id, task_id, session):
+        task_repo.edit_task(
             task_id,
             task_body.title,
             task_body.coins,
@@ -83,8 +83,8 @@ def complete_task(
     user_id: Annotated[int, Depends(jwt_token.get_user_id)],
     session: Session = Depends(get_session),
 ):
-    if db.is_user_task(user_id, task_id, session):
-        db.complete_task(task_id, session)
+    if task_repo.is_user_task(user_id, task_id, session):
+        task_repo.complete_task(task_id, session)
         response.status_code = status.HTTP_202_ACCEPTED
         return {"response": "task_is_complete"}
     response.status_code = status.HTTP_403_FORBIDDEN

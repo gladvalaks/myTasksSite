@@ -12,7 +12,7 @@ def is_user_with_email_exists(email: str, session: Session):
 
 
 def create_new_user(email, username, password, session: Session):
-    user = entities.User(email, username, hasher.hash_password(password))
+    user = entities.User(email = email, username=username, password = hasher.hash_password(password))
     session.add(user)
     session.commit()
 
