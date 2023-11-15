@@ -20,7 +20,6 @@ def get_tasks(
         return db.get_serialized_today_tasks(user_id, session)
 
     except Exception as er:
-        print(er)
         return {"response": "fail"}
 
 

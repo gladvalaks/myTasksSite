@@ -1,6 +1,7 @@
 import database.entities.task_priority as entities
 import database.database as db
 from sqlalchemy.orm import Session
+from models.responses.task_priority import Task_priority
 
 
 def create_task_priority(title: str, order: int, session: Session):
@@ -16,6 +17,6 @@ def get_serialized_priority(priority: entities.TaskPriority):
 def get_serialized_priorities(session: Session):
     priorities = session.query(entities.TaskPriority).all()
     serialized_priorities = [
-        get_serialized_priority(priority) for priority in priorities
+        Task_priority(**priority.serialize()) for priority in priorities
     ]
     return serialized_priorities

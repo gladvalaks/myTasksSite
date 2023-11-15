@@ -48,7 +48,6 @@ def register(
         response.status_code = status.HTTP_201_CREATED
         return {"response": "OK"}
     except Exception as er:
-        print(er)
         return {"response": "fail"}
 
 
