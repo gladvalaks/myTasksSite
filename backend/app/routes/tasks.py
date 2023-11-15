@@ -12,7 +12,7 @@ router = APIRouter()
 @router.get("/api/tasks")
 def get_tasks(
     response: Response,
-    user_id: Annotated[int, Depends(jwt_token.get_user_id)],
+    user_id: Annotated[int, Depends(jwt_token.get_user_id_from_decrypt_access_token)],
     session: Session = Depends(get_session),
 ):
     try:
@@ -27,7 +27,7 @@ def get_tasks(
 def create_task(
     task_body: task_requests_models.TaskBody,
     response: Response,
-    user_id: Annotated[int, Depends(jwt_token.get_user_id)],
+    user_id: Annotated[int, Depends(jwt_token.get_user_id_from_decrypt_access_token)],
     session: Session = Depends(get_session),
 ):
     task_repo.create_task(
@@ -45,7 +45,7 @@ def create_task(
 @router.delete("/api/tasks/{task_id}")
 def delete_task(
     task_id: int,
-    user_id: Annotated[int, Depends(jwt_token.get_user_id)],
+    user_id: Annotated[int, Depends(jwt_token.get_user_id_from_decrypt_access_token)],
     session: Session = Depends(get_session),
 ):
     if task_repo.is_user_task(user_id, task_id, session):
@@ -59,7 +59,7 @@ def edit_task(
     task_id: int,
     task_body: task_requests_models.TaskBody,
     response: Response,
-    user_id: Annotated[int, Depends(jwt_token.get_user_id)],
+    user_id: Annotated[int, Depends(jwt_token.get_user_id_from_decrypt_access_token)],
     session: Session = Depends(get_session),
 ):
     if task_repo.is_user_task(user_id, task_id, session):
@@ -80,7 +80,7 @@ def edit_task(
 def complete_task(
     task_id: int,
     response: Response,
-    user_id: Annotated[int, Depends(jwt_token.get_user_id)],
+    user_id: Annotated[int, Depends(jwt_token.get_user_id_from_decrypt_access_token)],
     session: Session = Depends(get_session),
 ):
     if task_repo.is_user_task(user_id, task_id, session):

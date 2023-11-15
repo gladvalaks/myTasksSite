@@ -21,7 +21,7 @@ def delete_token():
     response.delete_cookie("token")
 
 
-def decrypt_access_token(token: Annotated[str, Cookie()]):
+def get_user_id_from_decrypt_access_token(token: Annotated[str, Cookie()]):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id = payload.get("user_id")
@@ -31,5 +31,3 @@ def decrypt_access_token(token: Annotated[str, Cookie()]):
     return user_id
 
 
-def get_user_id(user_id: Annotated[int, Depends(decrypt_access_token)]):
-    return user_id

@@ -6,7 +6,7 @@ from typing import Annotated
 from fastapi.responses import JSONResponse
 import models.requests.user as models
 import database.repository.user as user_repo
-import libs.token as token
+import libs.token as jwt_token
 
 router = APIRouter()
 
@@ -22,7 +22,7 @@ def auth(
         response = JSONResponse(content={"response": "OK"})
         response.set_cookie(
             key="token",
-            value=token.create_access_token(data={"user_id": user_id}),
+            value=jwt_token.create_access_token(data={"user_id": user_id}),
             secure=False,
             samesite=None,
         )
@@ -54,7 +54,7 @@ def register(
 @router.get("/api/user")
 def get_name(
     response: Response,
-    user_id: Annotated[int, Depends(token.get_user_id)],
+    user_id: Annotated[int, Depends(jwt_token.get_user_id_from_decrypt_access_token)],
     session: Session = Depends(get_session),
 ):
     response.status_code = status.HTTP_200_OK
