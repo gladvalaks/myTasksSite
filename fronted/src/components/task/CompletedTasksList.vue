@@ -28,6 +28,14 @@ export default {
         class="task"
       >
         <TaskTemplate :task="task" />
+        <div class="task-complete-button">
+          <img             
+            src="@/assets/images/Checkmark.png" 
+            width="30" 
+            height="30"
+            @click="$emit('task-uncomplete', task.id)" 
+          >
+        </div>
       </div>
     </div>
   </div>

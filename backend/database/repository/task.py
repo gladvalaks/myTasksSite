@@ -51,10 +51,15 @@ def edit_task(
 def complete_task(id: int, session: Session):
     task = session.get(entities.Task, id)
     if task.is_daily:
-        create_task(get_values(task), session)
+        print(get_values(task))
+        create_task(*   get_values(task), session)
     task.finished_at = datetime.datetime.now()
     session.commit()
 
+def uncomplete_task(id: int, session: Session):
+    task = session.get(entities.Task, id)
+    task.finished_at = None
+    session.commit()
 
 def get_serialized_today_tasks(user_id: int, session: Session):
     tasks = session.query(entities.Task).filter_by(user_id=user_id).all()

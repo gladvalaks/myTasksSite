@@ -23,7 +23,9 @@
     </div>
 
     <div class="completed-tasks-list">
-      <CompletedTasksList :completed-tasks="completedTasks" />
+      <CompletedTasksList 
+      :completed-tasks="completedTasks"
+      @task-uncomplete = "uncompleteTask" />
     </div>
 
     <div class="user">
@@ -72,7 +74,7 @@ export default {
   computed: {
     userCoins()
     { 
-      return this.completedTasks.reduce((acc,y)=> {return acc+y.coins},0);
+      return this.completedTasks.reduce((acc,task)=> {return acc+task.coins},0);
     },
     notCompletedTasks() { 
       return this.sortedTasks().filter((task) => !task.finished_at && !task.is_daily);
@@ -91,7 +93,11 @@ export default {
       this.updateTaskList();
     },
     async completeTask(id) {
-      await axios.patch(`http://tasks.localhost.com/api/tasks/${id}/complete`).then((response)=> console.log(response));
+      await axios.post(`http://tasks.localhost.com/api/tasks/${id}/complete`).then((response)=> console.log(response));
+      this.updateTaskList();
+    },
+    async uncompleteTask(id) {
+      await axios.post(`http://tasks.localhost.com/api/tasks/${id}/uncomplete`).then((response)=> console.log(response));
       this.updateTaskList();
     },
     async deleteTask(id) {
