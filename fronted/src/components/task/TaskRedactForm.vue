@@ -79,9 +79,10 @@ export default {
     return {
       id: this.task.id,
       title: this.task.title,
-      description: this.task.title.description,
+      description: this.task.description,
       coins: this.task.coins,
       isDaily: this.task.is_daily,
+      task_priority_id: this.task.task_priority_id,
       schema:
         yup.object({
           title: yup.string()
