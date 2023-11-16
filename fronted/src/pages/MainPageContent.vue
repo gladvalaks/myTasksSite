@@ -144,7 +144,7 @@ export default {
       return this.tasks.sort((a, b) => b.important - a.important);
     },
     sortedByDateTasks() {
-      return this.tasks.sort((a, b) => b.date - a.date);
+      return this.tasks.sort((a, b) => a.created_at- b.created_at);
     },
     sortedByCoinsTasks() {
       return this.tasks.sort((a, b) => b.coins - a.coins);

@@ -1,19 +1,13 @@
 <template>
   <div class="sort-method-container">
-    <div>
-      <input id="sort-by-date" type="radio" name="sort-method" checked @change="$emit('change-sort-method', 'byDate')">
-      <label for="sort-by-date">Сортировать задачи по дате их создания</label>
-    </div>
-
-    <div>
-      <input id="sort-by-coins" type="radio" name="sort-method" @change="$emit('change-sort-method', 'byCoins')">
-      <label for="sort-by-coins">Сортировать задачи по количеству монет</label>
-    </div>
-
-    <div>
-      <input id="sort-by-important" type="radio" name="sort-method" @change="$emit('change-sort-method', 'byImportant')">
-      <label for="sort-by-important">Сортировать задачи по важности</label>
-    </div>
+    <select @change="($event) =>$emit('change-sort-method',$event.target.value)">
+      <option id="sort-by-date" name="sort-method"
+       value="byCoins">Сортировать задачи по дате их создания</option>
+      <option id="sort-by-coins"  name="sort-method" value="byCoins">
+      Сортировать задачи по количеству монет</option>
+      <option id="sort-by-important"  name="sort-method" value="byImportant"
+        >Сортировать задачи по важности</option>
+  </select>
   </div>
 </template>
 
