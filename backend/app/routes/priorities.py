@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
-from database.database import get_session
 from sqlalchemy.orm import Session
+
+from database.database import get_session
 import database.repository.priorities as priorities_repo
 
 router = APIRouter()

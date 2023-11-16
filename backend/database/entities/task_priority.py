@@ -1,5 +1,7 @@
-from database.database import Base
 from sqlalchemy import Integer, String, Column
+
+from database.database import Base
+
 
 
 class TaskPriority(Base):

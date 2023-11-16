@@ -1,7 +1,7 @@
-import database.entities.user as entities
-import libs.hasher as hasher
 from sqlalchemy.orm import Session
 
+import database.entities.user as entities
+import libs.hasher as hasher
 
 def get_username(id: int, session: Session):
     return session.get(entities.User, id).username

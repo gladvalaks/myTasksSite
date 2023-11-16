@@ -1,7 +1,7 @@
-import database.entities.task as entities
 from sqlalchemy.orm import Session
 import datetime
 
+import database.entities.task as entities
 
 def create_task(
     title: str,

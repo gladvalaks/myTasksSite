@@ -1,5 +1,6 @@
+from sqlalchemy.orm import Session 
+
 import database.entities.task_priority as entities
-from sqlalchemy.orm import Session
 from models.responses.task_priority import TaskPriority
 
 

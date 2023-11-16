@@ -1,9 +1,10 @@
 from fastapi import Response, status
 from fastapi import APIRouter, Depends
-from database.database import get_session
 from sqlalchemy.orm import Session
 from typing import Annotated
 from fastapi.responses import JSONResponse
+
+from database.database import get_session
 import models.requests.user as models
 import database.repository.user as user_repo
 import libs.token as jwt_token
@@ -38,17 +39,14 @@ def register(
     response: Response,
     session: Session = Depends(get_session),
 ):
-    try:
-        if user_repo.is_user_with_email_exists(user_data.email, session):
-            response.status_code = status.HTTP_409_CONFLICT
-            return {"response": "This email already is used"}
-        user_repo.create_new_user(
-            user_data.email, user_data.username, user_data.password, session
-        )
-        response.status_code = status.HTTP_201_CREATED
-        return {"response": "OK"}
-    except Exception as er:
-        return {"response": "fail"}
+    if user_repo.is_user_with_email_exists(user_data.email, session):
+        response.status_code = status.HTTP_409_CONFLICT
+        return {"response": "This email already is used"}
+    user_repo.create_new_user(
+        user_data.email, user_data.username, user_data.password, session
+    )
+    response.status_code = status.HTTP_201_CREATED
+    return {"response": "OK"}
 
 
 @router.get("/api/user")

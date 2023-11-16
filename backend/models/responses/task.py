@@ -10,4 +10,4 @@ class Task(pydantic.BaseModel):
     is_daily: bool
     task_priority_id: int
     created_at: int
-    finished_at: typing.Optional[int]
+    finished_at: int
