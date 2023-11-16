@@ -12,13 +12,13 @@ import libs.token as jwt_token
 router = APIRouter()
 
 
-@router.post("/api/auth")
-def auth(
+@router.post("/api/login")
+def login(
     user: models.UserForAuth,
     response: Response,
     session: Session = Depends(get_session),
 ):
-    user_id = user_repo.auth(user.email, user.password, session)
+    user_id = user_repo.get_user_id_by_email_and_password(user.email, user.password, session)
     if user_id:
         response = JSONResponse(content={"response": "OK"})
         response.set_cookie(

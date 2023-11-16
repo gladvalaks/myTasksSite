@@ -16,12 +16,9 @@ def create_new_user(email, username, password, session: Session):
     session.commit()
 
 
-def auth(email: str, password: str, session: Session):
+def get_user_id_by_email_and_password(email: str, password: str, session: Session):
     user = session.query(entities.User).filter_by(email=email).one_or_none()
     if user:
         if hasher.compare(password, user.password):
             return user.id
-        else:
-            return False
-    else:
-        return False
+    return 

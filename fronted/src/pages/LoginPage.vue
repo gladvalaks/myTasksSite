@@ -44,7 +44,7 @@ export default {
   methods: {
     auth() {
       const requestBody = { "email": this.email, "password": this.password }
-      axios.post("http://tasks.localhost.com/api/auth", requestBody)
+      axios.post("http://tasks.localhost.com/api/login", requestBody)
         .then(() => this.$router.push("/tasks"))
         .catch(() => this.errorAuthentification = true)
     }
