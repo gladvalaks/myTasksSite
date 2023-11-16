@@ -7,30 +7,9 @@
     >
       <NotCompletedTask :task="task" />
       <div class="task-buttons">
-        <div class="task-complete-button">
-          <img             
-            src="@/assets/images/Checkmark.png" 
-            width="30" 
-            height="30"
-            @click="$emit('task-complete', task.id)" 
-          >
-        </div>
-        <div class="task-cancel-button">
-          <img             
-            src="@/assets/images/Cancel.png" 
-            width="30" 
-            height="30"
-            @click="$emit('task-delete', task.id)" 
-          >
-        </div>
-        <div class="task-star-button">
-          <img             
-            src="@/assets/images/star.jpg" 
-            width="30" 
-            height="30"
-            @click="$emit('task-change-important-status', task.id)" 
-          >
-        </div>
+        <TaskButtons :id="task.id"
+        @task-delete = "(id)=>$emit('task-delete',id)" 
+        @task-complete = "(id)=>$emit('task-complete',id)"/>       
       </div>
     </div>
   </div>
@@ -38,10 +17,12 @@
 
 <script>
 import NotCompletedTask from './NotCompletedTask.vue';
+import TaskButtons from './TaskButtons.vue';
 export default {
   components: {
-    NotCompletedTask
-  },
+    NotCompletedTask,
+    TaskButtons
+},
   props: {
     tasks: {
       type: Array,
