@@ -20,7 +20,7 @@
             src="@/assets/images/redact.png" 
             width="30" 
             height="30"
-            @click="$emit('task-change-important-status', id)" 
+            @click="$emit('task-redact', id)" 
           >
         </div>
 </template>

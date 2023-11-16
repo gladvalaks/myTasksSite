@@ -1,23 +1,33 @@
 <template>
-  <div class="task-content">
-    <TaskTemplate :task="task" />
+  <div v-if="!onRedact" class="task-not-on-redact" >
+    <div class="task-content">
+      <TaskTemplate :task="task" />
+    </div>
+    <h1 class="task-coins">
+      {{ task.coins }}
+    </h1>
+    <div class="task-buttons">
+      <TaskButtons :id="task.id" @task-delete="(id) => $emit('task-delete', id)"
+        @task-complete="(id) => $emit('task-complete', id)"
+        @task-redact ="()=> onRedact = true" />
+    </div>
   </div>
-  <h1 class="task-coins">
-    {{ task.coins }}
-  </h1>
-  <div class="task-buttons">
-        <TaskButtons :id="task.id"
-        @task-delete = "(id)=>$emit('task-delete',id)" 
-        @task-complete = "(id)=>$emit('task-complete',id)"/>       
+  <div v-else class ="on-redact" >
+    <div class="task-content">
+      <TaskRedactForm :task="task"
+      @redact-task ="(task)=>$emit('redact-task',task)"/>
+    </div>
   </div>
 </template>
   
 <script>
 import TaskTemplate from './TaskTemplate.vue';
 import TaskButtons from './TaskButtons.vue';
+import TaskRedactForm from './TaskRedactForm.vue'
 export default {
   components: {
-    TaskTemplate, TaskButtons
+    TaskTemplate, TaskButtons,
+    TaskRedactForm
 },
   props: {
     task: {
@@ -25,9 +35,14 @@ export default {
       required: true
     }
   },
-  emits:[
-    "task-delete","task-complete"
-  ]
+  emits: [
+    "task-delete", "task-complete"
+  ],
+  data() {
+    return{
+      onRedact: false
+    }
+  }
 }
 </script>
   
