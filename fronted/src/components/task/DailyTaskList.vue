@@ -5,12 +5,12 @@
       :key="task.id"       
       :class="[task.important ? 'task-important':'task']"
     >
-      <NotCompletedTask :task="task" />
-      <div class="task-buttons">
-        <TaskButtons :id="task.id"
+      <NotCompletedTask 
+        :task="task"
         @task-delete = "(id)=>$emit('task-delete',id)" 
-        @task-complete = "(id)=>$emit('task-complete',id)"/>       
-      </div>
+        @task-complete ="(id)=>$emit('task-complete',id)"
+        
+      />
     </div>
   </div>
 </template>

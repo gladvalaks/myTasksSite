@@ -17,7 +17,7 @@
         </div>
         <div class="task-star-button">
           <img             
-            src="@/assets/images/star.jpg" 
+            src="@/assets/images/redact.png" 
             width="30" 
             height="30"
             @click="$emit('task-change-important-status', id)" 
