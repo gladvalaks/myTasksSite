@@ -9,6 +9,7 @@
         :task="task"
         @task-delete = "(id)=>$emit('task-delete',id)" 
         @task-complete ="(id)=>$emit('task-complete',id)"
+        @task-redact = "(id)=>$emit('task-redact',id)"
         
       />
     </div>
@@ -30,7 +31,7 @@ export default {
     }
   },
 
-  emits: ['task-complete','task-delete','task-change-important-status'],
+  emits: ['task-complete','task-delete','task-redact'],
   computed: {
 
   },

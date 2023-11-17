@@ -6,7 +6,7 @@
     >
       <div>
         <Field 
-          v-model="title"
+          v-model="task.title"
           name="title" 
           class="task-input-text" 
           type="text"
@@ -17,7 +17,7 @@
           class="input-error" 
         />
         <Field 
-          v-model="description"
+          v-model="task.description"
           as="textarea" 
           name="description" 
           class="task-input-text-description" 
@@ -28,7 +28,7 @@
           <h4>Введите количество монеток за выполнение задания</h4>
           
           <Field 
-            v-model="coins"
+            v-model="task.coins"
             name="coins"
             class="task-input-coins" 
             type="number" 
@@ -44,7 +44,7 @@
         <div class="is-daily">
           <h4>Это будет ежедневное ваше задание (Задания такого типа будут появляться каждый день)?</h4>
           <input 
-            v-model="isDaily" 
+            v-model="task.isDaily" 
             type="checkbox" 
           >
         </div>
@@ -77,12 +77,15 @@ export default {
 
   data() {
     return {
-      id: this.task.id,
-      title: this.task.title,
-      description: this.task.description,
-      coins: this.task.coins,
-      isDaily: this.task.is_daily,
-      task_priority_id: this.task.task_priority_id,
+      task: {
+        id: this.task.id,
+        title: this.task.title,
+        description: this.task.description,
+        coins: this.task.coins,
+        isDaily: this.task.is_daily,
+        task_priority_id: this.task.task_priority_id,
+      },
+      
       schema:
         yup.object({
           title: yup.string()
@@ -107,6 +110,16 @@ export default {
       };
 
       this.$emit('redact-task', task);
+    },
+    create() {
+      const task = {
+        title: this.title,
+        description: this.description,
+        coins: this.coins,
+        is_daily: this.isDaily,
+        task_priority_id: 1
+      };
+      this.$emit('create-task', task);
     }
   },
 

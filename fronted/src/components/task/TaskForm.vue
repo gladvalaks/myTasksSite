@@ -1,12 +1,12 @@
 <template>
-  <div class="task-form">
+  <div class="task-redact-form">
     <ValidationForm 
-      :validation-schema="schema" 
-      @submit="create"
-    >
+      :validation-schema="schema"
+      @submit="form" 
+       >
       <div>
         <Field 
-          v-model="title"
+          v-model="task_body.title"
           name="title" 
           class="task-input-text" 
           type="text"
@@ -17,18 +17,18 @@
           class="input-error" 
         />
         <Field 
-          v-model="description"
+          v-model="task_body.description"
           as="textarea" 
           name="description" 
           class="task-input-text-description" 
           type="text"
-          placeholder="Введите описание вашей задачи, если оно требуется" 
+          placeholder="Введите описание вашей задачи, если оно требуется"   
         />
         <div class="container-coins">
           <h4>Введите количество монеток за выполнение задания</h4>
           
           <Field 
-            v-model="coins"
+            v-model="task_body.coins"
             name="coins"
             class="task-input-coins" 
             type="number" 
@@ -44,13 +44,16 @@
         <div class="is-daily">
           <h4>Это будет ежедневное ваше задание (Задания такого типа будут появляться каждый день)?</h4>
           <input 
-            v-model="isDaily" 
+            v-model="task_body.isDaily" 
             type="checkbox" 
           >
         </div>
       </div>
-      <button class="button-create">
+      <button class="button-create" v-if="!task" >
         Создать задачу
+      </button>
+      <button class ="button-redact" v-else >
+        Редактировать задачу
       </button>
     </ValidationForm>
   </div>
@@ -67,14 +70,25 @@ export default {
     Field,
     ErrorMessage
   },
-  emits: ["create-task"],
+  props:{
+    task: {
+      type: Object,
+      required: false
+    }
+  },
+  emits: ["create-task","redact-task"],
 
   data() {
     return {
-      title: "",
-      description: "",
-      coins: 0,
-      isDaily: false,
+      task_body: {
+        id: this.task ? this.task.id: 0,
+        title: this.task ? this.task.title: "",
+        description: this.task ? this.task.description:"",
+        coins: this.task ? this.task.coins: 0,
+        is_daily: this.task ? this.task.is_daily: false,
+        task_priority_id: this.task ? this.task.task_priority_id:1,
+      },
+      
       schema:
         yup.object({
           title: yup.string()
@@ -88,16 +102,28 @@ export default {
   computed: {
   },
   methods: {
-    create() {
+    form(){
+      if(this.task){
+        this.redact();
+      }
+      else{
+        this.create();
+      }
+    },
+    redact() {
       const task = {
+        id: this.id,
         title: this.title,
         description: this.description,
         coins: this.coins,
         is_daily: this.isDaily,
-        task_priority_id: 1
+        task_priority_id: this.task_priority_id
       };
 
-      this.$emit('create-task', task);
+      this.$emit('redact-task', this.task_body);
+    },
+    create() {
+      this.$emit('create-task', this.task_body);
     }
   },
 
@@ -123,7 +149,9 @@ export default {
   border: 1px solid teal;
   padding: 1% 1%;
 }
-
+.task-input-text-description{
+  min-height: 4vh;
+}
 .container-coins > * {
   display: inline-block;
   margin: 1%;

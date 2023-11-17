@@ -14,7 +14,7 @@
   </div>
   <div v-else class ="on-redact" >
     <div class="task-content">
-      <TaskRedactForm :task="task"
+      <TaskForm :task="task"
       @redact-task ="(task)=>$emit('redact-task',task)"/>
     </div>
   </div>
@@ -23,11 +23,11 @@
 <script>
 import TaskTemplate from './TaskTemplate.vue';
 import TaskButtons from './TaskButtons.vue';
-import TaskRedactForm from './TaskRedactForm.vue'
+import TaskForm from './TaskForm.vue';
 export default {
   components: {
     TaskTemplate, TaskButtons,
-    TaskRedactForm
+    TaskForm
 },
   props: {
     task: {
@@ -36,7 +36,7 @@ export default {
     }
   },
   emits: [
-    "task-delete", "task-complete"
+    "task-delete", "task-complete","redact-task"
   ],
   data() {
     return{

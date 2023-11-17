@@ -18,7 +18,7 @@
         :tasks="notCompletedTasks"
         @task-complete="completeTask"
         @task-delete="deleteTask"
-        @task-change-important-status="changeImportantStatusTask"
+        @task-redact="redactTask"
       />
     </div>
 
@@ -89,7 +89,13 @@ export default {
   },
   methods: {
     async addTask(task) {
+      console.log("add");
       await axios.post("http://tasks.localhost.com/api/tasks",task)
+      this.updateTaskList();
+    },
+    async redactTask(task) {
+      console.log("redact");
+      await axios.post(`http://tasks.localhost.com/api/tasks/${task.id}`,task)
       this.updateTaskList();
     },
     async completeTask(id) {
