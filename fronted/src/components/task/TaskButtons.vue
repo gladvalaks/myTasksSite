@@ -33,7 +33,7 @@ export default {
     }
   },
 
-  emits: ['task-complete','task-delete','task-change-important-status'],
+  emits: ['task-complete','task-delete','task-redact'],
   computed: {
 
   },

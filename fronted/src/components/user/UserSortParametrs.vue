@@ -2,7 +2,7 @@
   <div class="sort-method-container">
     <select @change="($event) =>$emit('change-sort-method',$event.target.value)">
       <option id="sort-by-date" name="sort-method"
-       value="byCoins">Сортировать задачи по дате их создания</option>
+       value="byDate">Сортировать задачи по дате их создания</option>
       <option id="sort-by-coins"  name="sort-method" value="byCoins">
       Сортировать задачи по количеству монет</option>
       <option id="sort-by-important"  name="sort-method" value="byImportant"

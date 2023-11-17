@@ -19,6 +19,7 @@ def create_task(
         is_daily=is_daily,
         task_priority_id=task_priority_id,
         description=description,
+        created_at = datetime.datetime.now()
     )
     session.add(task)
     session.commit()

@@ -18,7 +18,7 @@
         :tasks="notCompletedTasks"
         @task-complete="completeTask"
         @task-delete="deleteTask"
-        @task-redact="redactTask"
+        @redact-task="redactTask"
       />
     </div>
 
@@ -94,8 +94,8 @@ export default {
       this.updateTaskList();
     },
     async redactTask(task) {
-      console.log("redact");
-      await axios.post(`http://tasks.localhost.com/api/tasks/${task.id}`,task)
+      console.log(task);
+      await axios.put(`http://tasks.localhost.com/api/tasks/${task.id}`,task)
       this.updateTaskList();
     },
     async completeTask(id) {
@@ -137,6 +137,7 @@ export default {
     },
     sortedTasks(){
       if(this.sortMethod=="byDate"){
+        console.log(this.sortedByDateTasks())
         return this.sortedByDateTasks();
       }
       else if(this.sortMethod=="byCoins"){

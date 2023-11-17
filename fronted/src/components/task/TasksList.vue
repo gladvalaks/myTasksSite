@@ -10,6 +10,7 @@
         @task-delete = "(id)=>$emit('task-delete',id)" 
         @task-complete ="(id)=>$emit('task-complete',id)"
         @task-redact = "(id)=>$emit('task-redact',id)"
+        @redact-task = "(id)=>$emit('redact-task',id)"
         
       />
     </div>

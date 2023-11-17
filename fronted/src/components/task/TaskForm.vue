@@ -6,7 +6,7 @@
        >
       <div>
         <Field 
-          v-model="task_body.title"
+          v-model="this.task_body.title"
           name="title" 
           class="task-input-text" 
           type="text"
