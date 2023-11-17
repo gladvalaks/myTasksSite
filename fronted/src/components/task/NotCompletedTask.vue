@@ -15,7 +15,9 @@
   <div v-else class ="on-redact" >
     <div class="task-content">
       <TaskForm :task="task"
-      @redact-task ="(task)=>$emit('redact-task',task)"/>
+      @redact-task ="function red(task){$emit('redact-task',task);
+          onRedact = false;
+          }"/>
     </div>
   </div>
 </template>
