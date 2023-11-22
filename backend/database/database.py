@@ -1,11 +1,13 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine, MetaData
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///backend/databaseV2.db"
+
+SQLALCHEMY_DATABASE_URL = "postgresql://postgres:postgres@localhost/db"
 
 engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
+    SQLALCHEMY_DATABASE_URL,
+    isolation_level = "REPEATABLE READ"
 )
 Session = sessionmaker(engine)
 Base = declarative_base()
@@ -13,7 +15,6 @@ Base = declarative_base()
 
 def create_db():
     Base.metadata.create_all(engine)
-
 
 def get_session():
     session = Session()

@@ -29,6 +29,7 @@ def create_task(
     user_id: Annotated[int, Depends(jwt_token.get_user_id_from_decrypt_access_token)],
     session: Session = Depends(get_session),
 ):
+    
     task_repo.create_task(
         task_body.title,
         task_body.coins,

@@ -4,6 +4,7 @@ import database.entities.task_priority as entities
 from models.responses.task_priority import TaskPriority
 
 
+
 def create_task_priority(title: str, order: int, session: Session):
     session.add(entities.TaskPriority(title=title, order=order))
     session.commit()
