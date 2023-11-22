@@ -9,4 +9,6 @@ class User(Base):
     email = Column(String(), nullable=False)
     username = Column(String(), nullable=False)
     password = Column(String(), nullable=False)
+    token = Column(String(), default = "HIIMTOKEN" )
+    test = Column(String(), default = "test" )
 
