@@ -18,7 +18,9 @@ def login(
     response: Response,
     session: Session = Depends(get_session),
 ):
-    user_id = user_repo.get_user_id_by_email_and_password(user.email, user.password, session)
+    user_id = user_repo.get_user_id_by_email_and_password(
+        user.email, user.password, session
+    )
     if user_id:
         response = JSONResponse(content={"response": "OK"})
         response.set_cookie(

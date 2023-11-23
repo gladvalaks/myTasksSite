@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 import database.entities.user as entities
 import libs.hasher as hasher
 
+
 def get_username(id: int, session: Session):
     return session.get(entities.User, id).username
 
@@ -12,7 +13,11 @@ def is_user_with_email_exists(email: str, session: Session):
 
 
 def create_new_user(email, username, password, session: Session):
-    session.add(entities.User(email = email, username=username, password = hasher.hash_password(password)))
+    session.add(
+        entities.User(
+            email=email, username=username, password=hasher.hash_password(password)
+        )
+    )
     session.commit()
 
 
@@ -21,4 +26,4 @@ def get_user_id_by_email_and_password(email: str, password: str, session: Sessio
     if user:
         if hasher.compare(password, user.password):
             return user.id
-    return 
+    return

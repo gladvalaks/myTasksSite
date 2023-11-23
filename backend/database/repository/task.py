@@ -3,6 +3,7 @@ import datetime
 
 import database.entities.task as entities
 
+
 def create_task(
     title: str,
     coins: int,
@@ -19,7 +20,7 @@ def create_task(
         is_daily=is_daily,
         task_priority_id=task_priority_id,
         description=description,
-        created_at = datetime.datetime.now()
+        created_at=datetime.datetime.now(),
     )
     session.add(task)
     session.commit()
@@ -53,14 +54,16 @@ def complete_task(id: int, session: Session):
     task = session.get(entities.Task, id)
     if task.is_daily:
         print(get_values(task))
-        create_task(*   get_values(task), session)
+        create_task(*get_values(task), session)
     task.finished_at = datetime.datetime.now()
     session.commit()
+
 
 def uncomplete_task(id: int, session: Session):
     task = session.get(entities.Task, id)
     task.finished_at = None
     session.commit()
+
 
 def get_serialized_today_tasks(user_id: int, session: Session):
     tasks = session.query(entities.Task).filter_by(user_id=user_id).all()

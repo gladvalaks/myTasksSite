@@ -29,5 +29,3 @@ def get_user_id_from_decrypt_access_token(token: Annotated[str, Cookie()]):
         delete_token()
         return
     return user_id
-
-

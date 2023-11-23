@@ -8,6 +8,7 @@ from database.database import Base
 from database.entities.task_priority import *
 from database.entities.task import *
 from database.entities.user import *
+from database.entities.user_parameters import *
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -68,9 +69,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()

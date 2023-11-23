@@ -20,8 +20,6 @@ def get_tasks(
     return task_repo.get_serialized_today_tasks(user_id, session)
 
 
-
-
 @router.post("/api/tasks")
 def create_task(
     task_body: task_requests_models.TaskBody,
@@ -29,7 +27,6 @@ def create_task(
     user_id: Annotated[int, Depends(jwt_token.get_user_id_from_decrypt_access_token)],
     session: Session = Depends(get_session),
 ):
-    
     task_repo.create_task(
         task_body.title,
         task_body.coins,
@@ -79,6 +76,7 @@ def edit_task(
     response.status_code = status.HTTP_403_FORBIDDEN
     return {"response": "You don't have the rights to do this"}
 
+
 @router.post("/api/tasks/{task_id}/complete")
 def complete_task(
     task_id: int,
@@ -92,6 +90,7 @@ def complete_task(
         return {"response": "task_is_complete"}
     response.status_code = status.HTTP_403_FORBIDDEN
     return {"response": "You don't have the rights to do this"}
+
 
 @router.post("/api/tasks/{task_id}/uncomplete")
 def uncomplete_task(
