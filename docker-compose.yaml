@@ -1,0 +1,10 @@
+services:
+  taskapi:
+    build: ./backend
+    ports:
+      - 3001:3001
+  frontend:
+    build: ./fronted
+    ports:
+      - 3000:3000
+

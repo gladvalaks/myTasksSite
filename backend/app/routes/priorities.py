@@ -10,3 +10,6 @@ router = APIRouter()
 @router.get("/api/priorities")
 def get_priorities(session: Session = Depends(get_session)):
     return priorities_repo.get_serialized_priorities(session)
+@router.get("/api/priorities/HI")
+def HI():
+    return "HI"
